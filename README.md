@@ -28,7 +28,7 @@ Ordem de Compra
 --- 
 
 ✅ Requisitos Funcionais (RF)
-- [ ] - Permitir cadastro, edição e exclusão de produtos.
+- [x] - Permitir cadastro de produtos.
 - [ ] - Definir e monitorar quantidades mínimas de estoque.
 - [ ] - Rastrear produtos por identificação única.
 - [ ] - Atualizar e exibir quantidade de itens no estoque.
@@ -39,9 +39,7 @@ Ordem de Compra
 - [ ] - Integrar-se com fornecedores para atualizações de prazos.
 
 🚀 Requisitos Não Funcionais (RNF)
-- [ ] -Acessível via navegador web.
 - [ ] -Tempo de resposta inferior a 3 segundos.
-- [ ] -Armazenamento de dados por no mínimo 5 anos.
 
 📜 Regras de Negócio (RN)
 - [ ] - Cada produto deve ter um identificador único.

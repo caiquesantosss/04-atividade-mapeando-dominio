@@ -1,24 +1,32 @@
 import Entity from '../../core/entities/entities'
 import { Optional } from '../../core/types/optinal'
+import Stock from './values-object/stock'
 import UniqueEntityId from './values-object/unique-entity'
 
 interface ProductProps {
-  productId: string
   title: string
   description: string
   size: string
   color: string
   price: number
-  stock: string
+  stock: Stock
   createdAt: Date
-  updatedAt: Date
+  updatedAt?: Date
 }
 
-export class Product extends Entity<ProductProps> {
-  get productId() {
-    return this.props.productId
-  }
+export type StockProps = {
+  amount: number
+  minAmount?: number
+}
 
+export type ProductCreateProps = Omit<
+  Optional<ProductProps, 'createdAt'>,
+  'stock' & {
+    stock: StockProps
+  }
+>
+
+export default class Product extends Entity<ProductProps> {
   get title() {
     return this.props.title
   }
@@ -47,12 +55,29 @@ export class Product extends Entity<ProductProps> {
     return this.props.updatedAt
   }
 
-  private touch() {
-    this.props.updatedAt = new Date()
+  get id() {
+    return this._id
+  }
+
+  get stock() {
+    this.props.stock = new Stock(
+      this.props.stock.data.amout,
+      this.props.stock.data.minAmount, 
+      (instace?: Product) => this.touch(instace), this
+    )
+    return this.props.stock
+}
+
+  protected touch(instace?: Product) {
+    if (instace) {
+      instace.props.updatedAt = new Date()
+    } else {
+      this.props.updatedAt = new Date()
+    }
   }
 
   set price(price: number) {
-    this.props.price = price 
+    this.props.price = price
     this.touch()
   }
 
@@ -73,15 +98,18 @@ export class Product extends Entity<ProductProps> {
 
   static create(
     props: Optional<ProductProps, 'createdAt' | 'updatedAt'>,
-    id?: UniqueEntityId
+    id?: string
   ) {
     const product = new Product(
       {
         ...props,
+        stock: new Stock(
+          props.stock.data.amout > 1 ? props.stock.data.amout : 1,
+          props.stock.data.minAmount
+        ),
         createdAt: new Date(),
-        updatedAt: new Date(),
       },
-      id?.values
+      id
     )
 
     return product

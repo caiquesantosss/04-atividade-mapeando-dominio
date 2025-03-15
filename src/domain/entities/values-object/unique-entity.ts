@@ -8,7 +8,7 @@ export default class UniqueEntityId {
         this._value = id ?? randomUUID()
     }
 
-    get values() {
+    get value() {
         return this._value
     }
 
