@@ -23,4 +23,17 @@ export default class Stock {
       minAmount: this.minAmout,
     }
   }
+
+  get isLowStock() {
+    return this.amount < this.minAmout
+  }
+
+  updateStock(quantity: number) {
+    this.amount += quantity
+
+    if (this.amount < 0) {
+        throw new Error("Estoque não pode ser negativo!")
+    }
+}
+
 }
